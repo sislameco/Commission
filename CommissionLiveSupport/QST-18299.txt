@@ -1,0 +1,80 @@
+
+'Patrick Coyle'
+
+select 
+item.ItemName, 
+l.LeadRefNo ,
+(Case when u.Id is NULL then  'Unassigned' else concat(u.FirstName, ' ', u.LastName) end ) CurrentUser,
+'Patrick Coyle' ShouldUser,
+Sum(LComm.Commission) CommissionAmount
+ from commission.LeadUserCommissions lComm
+left join users u on u.id = lComm.FkUserId
+inner join commission.CommissionItems item on lComm.FkCommissionItemId = item.Id
+inner join quotation.leads l on l.Id = lcomm.FkLeadId
+where FkCommissionItemId in (37,52) and lComm.rstatus = 1 and l.rstatus = 1 and (FkUserId is NUll OR  FkUserId not in  (1098 )) 
+Group by item.ItemName,l.LeadRefNo,u.Id,u.FirstName,u.LastName
+
+
+
+
+
+
+
+
+
+'Cian O`Sullivan'
+
+select SimplifiedEirCode,* from quotation.Leads where LEFT(SimplifiedEirCode, 3) in ('H65','H53','H71','H91','H54','H62','N41','F26','F31','F35','F23','F12','F28','F52','F45','F42','F56','F91')
+and rstatus = 1 
+
+
+select 
+
+item.ItemName, 
+l.LeadRefNo ,
+--u.Id UserId,
+(Case when u.Id is NULL then  'Unassigned' else concat(u.FirstName, ' ', u.LastName) end ) CurrentUser,
+'Cian O`Sullivan' ShouldUser,
+Sum(LComm.Commission) CommissionAmount
+
+from commission.LeadUserCommissions lComm
+left join users u on u.id = lComm.FkUserId
+inner join commission.CommissionItems item on lComm.FkCommissionItemId = item.Id
+inner join quotation.leads l on l.Id = lcomm.FkLeadId
+where lComm.FkLeadId in (select FkLeadId from quotation.Leads where LEFT(SimplifiedEirCode, 3) in ('H65','H53','H71','H91','H54','H62','N41','F26','F31','F35','F23','F12','F28','F52','F45','F42','F56','F91')
+and rstatus = 1 and lComm.rstatus = 1 and l.rstatus = 1
+) and FkCommissionItemId in (54,55) and (FkUserId is NUll OR  FkUserId not in  (79 )) 
+Group by item.ItemName,l.LeadRefNo,u.Id,u.FirstName,u.LastName
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'Thomas Ryan'
+select 
+
+item.ItemName, 
+l.LeadRefNo ,
+--u.Id UserId,
+(Case when u.Id is NULL then  'Unassigned' else concat(u.FirstName, ' ', u.LastName) end ) CurrentUser,
+'Thomas Ryan' ShouldUser,
+Sum(LComm.Commission) CommissionAmount
+
+from commission.LeadUserCommissions lComm
+left join users u on u.id = lComm.FkUserId
+inner join commission.CommissionItems item on lComm.FkCommissionItemId = item.Id
+inner join quotation.leads l on l.Id = lcomm.FkLeadId
+where lComm.FkLeadId in (select FkLeadId from quotation.Leads where LEFT(SimplifiedEirCode, 3) in ('R93','R21','K32','A41','A94','D01','D02','D03','D04','D05','D06','D6W','D07','D08','D09','D10','D11','D12','D13','D14','D15','D16','D17','D18','D20','D22','D24','A42','A96','K78','K45','K36','A45','K56','K34','K67','R14','R56','R51','W23','W34','W91','W12','R95','R32','A92','A91','A84','A86','A85','A83','A82','C15','A81','A75','H23','H18','R42','R35','R45','X35','X42','X91','Y21','Y25','Y34','Y35','Y14','A98','A63','A67','N37','N91','N39')
+and rstatus = 1 and lComm.rstatus = 1 and l.rstatus = 1
+) and FkCommissionItemId in (54,55) and (FkUserId is NUll OR  FkUserId not in  (1094 )) 
+Group by item.ItemName,l.LeadRefNo,u.Id,u.FirstName,u.LastName
+
