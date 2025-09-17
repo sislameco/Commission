@@ -28,11 +28,17 @@ select SimplifiedEirCode,* from quotation.Leads where LEFT(SimplifiedEirCode, 3)
 and rstatus = 1 
 
 
+
+
 select 
 
 item.ItemName, 
+	Cast(l.CreatedDate as date) as 'Lead Created Date',
 l.LeadRefNo ,
+LEFT(UPPER(l.SimplifiedEirCode), 3)SimplifiedEirCode,
 --u.Id UserId,
+	s.Name SchemeType,
+	st.StructureName CommissionStructure,
 (Case when u.Id is NULL then  'Unassigned' else concat(u.FirstName, ' ', u.LastName) end ) CurrentUser,
 'Cian O`Sullivan' ShouldUser,
 Sum(LComm.Commission) CommissionAmount
@@ -41,10 +47,13 @@ from commission.LeadUserCommissions lComm
 left join users u on u.id = lComm.FkUserId
 inner join commission.CommissionItems item on lComm.FkCommissionItemId = item.Id
 inner join quotation.leads l on l.Id = lcomm.FkLeadId
-where lComm.FkLeadId in (select FkLeadId from quotation.Leads where LEFT(SimplifiedEirCode, 3) in ('H65','H53','H71','H91','H54','H62','N41','F26','F31','F35','F23','F12','F28','F52','F45','F42','F56','F91')
-and rstatus = 1 and lComm.rstatus = 1 and l.rstatus = 1
-) and FkCommissionItemId in (54,55) and (FkUserId is NUll OR  FkUserId not in  (79 )) 
-Group by item.ItemName,l.LeadRefNo,u.Id,u.FirstName,u.LastName
+	inner join setup.SchemeType s on s.id = l.FkSchemeTypeId
+	inner join commission.CommissionStructure st on st.id = l.FkCommissionStructureId
+where LEFT(l.SimplifiedEirCode, 3) in ('H65','H53','H71','H91','H54','H62','N41','F26','F31','F35','F23','F12','F28','F52','F45','F42','F56','F91')
+ and lComm.rstatus = 1 and l.rstatus = 1
+ and FkCommissionItemId in (54,55) and (FkUserId is NUll OR  FkUserId not in  (79 )) 
+Group by 	item.ItemName,Cast(l.CreatedDate as date),l.LeadRefNo,l.SimplifiedEirCode,s.Name, st.StructureName,u.Id,u.FirstName,u.LastName
+
 
 
 
@@ -77,4 +86,8 @@ where lComm.FkLeadId in (select FkLeadId from quotation.Leads where LEFT(Simplif
 and rstatus = 1 and lComm.rstatus = 1 and l.rstatus = 1
 ) and FkCommissionItemId in (54,55) and (FkUserId is NUll OR  FkUserId not in  (1094 )) 
 Group by item.ItemName,l.LeadRefNo,u.Id,u.FirstName,u.LastName
+
+
+
+
 
