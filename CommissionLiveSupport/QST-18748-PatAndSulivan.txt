@@ -1,0 +1,47 @@
+INSERT INTO [commission].[LeadUserCommissionsResult]
+    ([FkUserWiseCommissionPayableId]
+    ,[FkItemWiseCommissionId]
+    ,[LeadUserCommissionId]
+    ,[Commission]
+    ,[FkUserId]
+    ,[ShouldUserId]
+	,[IsUpdate])
+Select * from (
+select 
+	lComm.FkUserWiseCommissionPayableId,
+	lComm.FkItemWiseCommissionId,
+	lComm.Id,
+	[Commission],
+	lcomm.FkUserId,
+	1098 ShouldUserId ,
+	0 IsUpdate
+from commission.LeadUserCommissions lComm
+left join users u on u.id = lComm.FkUserId
+inner join commission.CommissionItems item on lComm.FkCommissionItemId = item.Id
+inner join quotation.leads l on l.Id = lcomm.FkLeadId
+where 
+ lComm.rstatus = 1 AND l.rstatus = 1 AND FkCommissionItemId in (37,52) AND (FkUserId is NUll OR  FkUserId not in  (1098 )) 
+ AND l.LeadRefNo in ('CHS-HEUP-12524-01','CHS-HEUP-12523-01','CHS-HEUP-12522-02')
+
+ union 
+ select 
+	lComm.FkUserWiseCommissionPayableId,
+	lComm.FkItemWiseCommissionId,
+	lComm.Id,
+	[Commission],
+	lcomm.FkUserId,
+	79 ShouldUserId ,
+		0 IsUpdate
+from commission.LeadUserCommissions lComm
+left join users u on u.id = lComm.FkUserId
+inner join commission.CommissionItems item on lComm.FkCommissionItemId = item.Id
+inner join quotation.leads l on l.Id = lcomm.FkLeadId
+where 
+ lComm.rstatus = 1 AND l.rstatus = 1 AND FkCommissionItemId in (54,55) AND (FkUserId is NUll OR  FkUserId not in  (79 )) 
+ AND l.LeadRefNo in ('CHS-HEUP-12524-01','CHS-HEUP-12523-01','CHS-HEUP-12522-02')) temp
+
+
+
+ select * from commission.CommissionItems where FkCommissionTypeId in  ( 35,31) 
+
+ select * from users where id in (1098,79)

@@ -1,0 +1,9 @@
+
+		UPDATE commission.LeadUserCommissions
+SET FkUserId = 1098
+WHERE Id IN (
+    SELECT LeadUserCommissionId
+    FROM commission.LeadUserCommissionsResult
+    WHERE ShouldUserId = 1098
+)
+AND FkUserId IS NULL;
