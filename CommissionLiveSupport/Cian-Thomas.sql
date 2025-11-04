@@ -1,3 +1,14 @@
+select FkSchemeTypeId,SimplifiedEirCode from quotation.Leads where id = 20441
+
+select * from quotation.LeadStageAssignedUsers where fkleadid = 20441
+
+select  * from quotation.LeadAssignedUsers  where fkleadid =20441
+
+
+
+
+
+
 
 select   
 Distinct
